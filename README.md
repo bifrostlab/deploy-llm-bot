@@ -44,7 +44,7 @@ This key can then be reused for future authenticate with Vault. You will then ne
 You can then connect to the VM by using:
 
 ```bash
-ssh bastion
+ssh llm-bastion
 ```
 
 ### Option 2: Ephemeral SSH Key on Public Computer
@@ -58,5 +58,5 @@ For users on a public computer, authenticate and generate an ephemeral SSH priva
 This script produces an SSH certificate and private key. Connect to the VM using:
 
 ```bash
-ssh -i $name-cert.pub -i $name bastion
+ssh -i $name-cert.pub -i $name llm-bastion
 ```
