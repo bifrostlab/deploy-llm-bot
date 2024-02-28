@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  ollama:
+    image: ollama/ollama:0.1.27
+    restart: unless-stopped
+    networks:
+      - bridge
+    ports:
+      - 11434:11434
+    volumes:
+      - /opt/models:/root/.ollama
+
+networks:
+  bridge:
+    name: bridge_network
+    external: true
