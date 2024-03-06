@@ -1,16 +1,36 @@
-version: '3.9'
+version: "3.9"
+name: vait
+
 services:
-  ollama:
-    image: ollama/ollama:0.1.27
+  # Cloudflare tunnel to expose the services
+  cloudflared:
+    image: cloudflare/cloudflared:2024.2.1
     restart: unless-stopped
-    networks:
-      - bridge
-    ports:
-      - 11434:11434
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=$CF_TUNNEL_TOKEN
+  # CPU only Ollama instance for light model inference
+  ollama:
+    container_name: vait-ollama-cpu
+    image: ollama/ollama:0.1.28
+    restart: unless-stopped
     volumes:
       - /opt/models:/root/.ollama
+  # LiteLLM Proxy to route LLM requests
+  litellm:
+    container_name: vait-litellm-proxy
+    image: ghcr.io/berriai/litellm:main-v1.29.1
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./litellm-config.yaml:/app/config.yaml
+    command: "--config /app/config.yaml --port 8000 --num_workers $LITELLM_WORKERS_NUM"
+    environment:
+      - OPENAI_API_KEY=$OPENAI_API_KEY
+    depends_on:
+      - ollama
+
 
 networks:
-  bridge:
-    name: bridge_network
-    external: true
+  vait:
