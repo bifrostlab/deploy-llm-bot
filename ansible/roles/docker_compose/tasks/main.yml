@@ -1,0 +1,24 @@
+---
+- name: Create {{ docker_compose_project_name }}
+  become: true
+  ansible.builtin.file:
+    path: "/opt/{{ docker_compose_project_name }}"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: "0755"
+
+- name: Copy {{ docker_compose_srcfile }}
+  become: true
+  ansible.builtin.copy:
+    src: "{{ docker_compose_srcfile }}"
+    dest: "/opt/{{ docker_compose_project_name }}/docker-compose.yml"
+    owner: deploy
+    group: deploy
+    mode: "0644"
+
+- name: Start docker-compose in {{ docker_compose_project_name }}
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: "/opt/{{ docker_compose_project_name }}"
+    state: present

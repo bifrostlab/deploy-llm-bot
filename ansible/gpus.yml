@@ -1,0 +1,25 @@
+---
+- name: Setup the GPU-enabled hosts
+  hosts: gpus
+  gather_facts: true
+  roles:
+    - role: setup_docker
+    - role: setup_user
+    - role: add_persistent_storage
+      vars:
+        add_persistent_storage_device: /dev/vdb
+        add_persistent_storage_mount_point: /mnt/models
+    - role: setup_nvidia_ctk
+    - role: docker_compose
+      vars:
+        docker_compose_project_name: ollama
+        docker_compose_srcfile: ../ollama/docker-compose.yaml
+    - role: pull_ollama_model
+      vars:
+        pull_ollama_model_name: mixtral
+    - role: pull_ollama_model
+      vars:
+        pull_ollama_model_name: llama2
+    - role: pull_ollama_model
+      vars:
+        pull_ollama_model_name: mistral

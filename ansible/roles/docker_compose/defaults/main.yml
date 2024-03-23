@@ -1,0 +1,3 @@
+---
+docker_compose_project_name: app
+docker_compose_srcfile: ../app/docker-compose.yaml

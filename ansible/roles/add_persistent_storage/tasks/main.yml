@@ -1,0 +1,31 @@
+---
+- name: Create {{ add_persistent_storage_mount_point }}
+  become: true
+  ansible.builtin.file:
+    path: "{{ add_persistent_storage_mount_point }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create a ext4 filesystem on the {{ add_persistent_storage_device }}
+  become: true
+  community.general.filesystem:
+    fstype: ext4
+    dev: "{{ add_persistent_storage_device }}"
+    state: present
+
+- name: Fetch the UUID of {{ add_persistent_storage_device }}
+  become: true
+  ansible.builtin.command: blkid -s UUID -o value {{ add_persistent_storage_device }}
+  changed_when: false
+  register: blkid_out
+
+- name: Mount {{ add_persistent_storage_mount_point }}
+  become: true
+  ansible.posix.mount:
+    path: "{{ add_persistent_storage_mount_point }}"
+    src: "UUID={{ blkid_out.stdout }}"
+    fstype: ext4
+    opts: defaults,nofail
+    state: mounted

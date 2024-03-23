@@ -1,0 +1,3 @@
+---
+add_persistent_storage_mount_point: /mnt/data
+add_persistent_storage_device: /dev/vdb

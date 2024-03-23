@@ -12,3 +12,12 @@ repos:
   rev: v3.0.1
   hooks:
   - id: docker-compose-check
+- repo: https://github.com/ansible/ansible-lint.git
+  rev: v24.2.1
+  hooks:
+  - id: ansible-lint
+    entry: ansible-lint
+    pass_filenames: true
+    files: ^ansible/.*\.(yml|yaml)$
+    additional_dependencies:
+    - ansible>=9.3

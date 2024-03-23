@@ -1,0 +1,14 @@
+---
+- name: Configure NVIDIA Container Toolkit
+  become: true
+  ansible.builtin.command: nvidia-ctk runtime configure --runtime=docker
+  register: nvidia_ctk_runtime_configure
+  changed_when: nvidia_ctk_runtime_configure.rc != 0
+  notify:
+    - Restart Docker
+
+- name: Restart Docker
+  become: true
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
