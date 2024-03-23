@@ -1,0 +1,3 @@
+---
+pull_ollama_model_container: ollama
+pull_ollama_model_name: phi

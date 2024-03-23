@@ -1,0 +1,30 @@
+---
+- name: Create a user named deploy
+  become: true
+  ansible.builtin.user:
+    name: deploy
+    state: present
+    shell: /bin/bash
+    createhome: true
+    home: /home/deploy
+
+- name: Add deploy to the docker group
+  become: true
+  ansible.builtin.user:
+    name: deploy
+    groups: docker
+    append: true
+
+- name: Add ubuntu to the docker group
+  become: true
+  ansible.builtin.user:
+    name: ubuntu
+    groups: docker
+    append: true
+
+- name: Allow appadmin SSH principal to login as deploy
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/principals/deploy
+    line: "appadmin"
+    state: present

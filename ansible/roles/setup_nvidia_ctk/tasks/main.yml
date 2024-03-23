@@ -1,0 +1,29 @@
+---
+- name: Add NVIDIA libcontainer apt key
+  become: true
+  ansible.builtin.apt_key:
+    state: present
+    url: https://nvidia.github.io/libnvidia-container/gpgkey
+    keyring: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+- name: Add NVIDIA Container Toolkit repo
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /"
+    state: present
+    filename: nvidia-container-toolkit
+
+- name: Install NVIDIA Container Toolkit
+  become: true
+  ansible.builtin.apt:
+    name:
+      - nvidia-container-toolkit
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  notify:
+    - Configure NVIDIA Container Toolkit
+    - Restart Docker
+
+- name: Force handlers to run
+  ansible.builtin.meta: flush_handlers

@@ -1,0 +1,6 @@
+---
+- name: Pull Ollama model {{ pull_ollama_model_name }}
+  become: true
+  community.docker.docker_container_exec:
+    container: "{{ pull_ollama_model_container }}"
+    command: "ollama pull {{ pull_ollama_model_name }}"
