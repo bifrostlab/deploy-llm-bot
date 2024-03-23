@@ -10,15 +10,8 @@ TrustedUserCAKeys /etc/ssh/vault-CA.pem
 AuthorizedPrincipalsFile /etc/ssh/principals/%u
 EOF
 
-# Add a deploy user that can run docker commands
-sudo useradd -m -s /bin/bash deploy
-sudo usermod -aG docker deploy
-
 # Ensure the AuthorizedPrincipalsFile directory exists
 sudo mkdir -p /etc/ssh/principals
-sudo tee /etc/ssh/principals/deploy <<EOF
-appadmin
-EOF
 sudo tee /etc/ssh/principals/ubuntu <<EOF
 admin
 EOF
