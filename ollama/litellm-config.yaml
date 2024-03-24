@@ -1,0 +1,29 @@
+model_list:
+  - model_name: gpt-3.5-turbo
+    litellm_params:
+      model: gpt-3.5-turbo
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: gpt-4
+    litellm_params:
+      model: gpt-4
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: mixtral
+    litellm_params:
+      model: ollama/mixtral
+      api_base: http://ollama:11434
+  - model_name: mistral
+    litellm_params:
+      model: ollama/mistral
+      api_base: http://ollama:11434
+  - model_name: llama2
+    litellm_params:
+      model: ollama/llama2
+      api_base: http://ollama:11434
+
+litellm_params:
+  drop_params: True
+
+router_settings:
+  num_retries: 2
+  allowed_fails: 2
+  timeout: 60

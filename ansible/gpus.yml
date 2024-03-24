@@ -10,8 +10,13 @@
         add_persistent_storage_device: /dev/vdb
         add_persistent_storage_mount_point: /mnt/models
     - role: setup_nvidia_ctk
+    - role: deploy_litellm
+      vars:
+        deploy_litellm_configfile: ../ollama/litellm-config.yaml
+        deploy_litellm_project_name: ollama
     - role: docker_compose
       vars:
+        docker_compose_envfile: ../ollama/.env
         docker_compose_project_name: ollama
         docker_compose_srcfile: ../ollama/docker-compose.yaml
     - role: pull_ollama_model

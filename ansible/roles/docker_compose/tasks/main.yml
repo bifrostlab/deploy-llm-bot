@@ -1,5 +1,5 @@
 ---
-- name: Create {{ docker_compose_project_name }}
+- name: Create /opt/{{ docker_compose_project_name }}
   become: true
   ansible.builtin.file:
     path: "/opt/{{ docker_compose_project_name }}"
@@ -7,6 +7,15 @@
     owner: deploy
     group: deploy
     mode: "0755"
+
+- name: Copy env file for {{ docker_compose_project_name }}
+  become: true
+  ansible.builtin.template:
+    src: "{{ docker_compose_envfile }}"
+    dest: "/opt/{{ docker_compose_project_name }}/.env"
+    owner: deploy
+    group: deploy
+    mode: "0644"
 
 - name: Copy {{ docker_compose_srcfile }}
   become: true
