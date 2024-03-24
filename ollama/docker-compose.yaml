@@ -1,7 +1,9 @@
+name: vait
+
 services:
   ollama:
     container_name: ollama
-    image: ollama/ollama:0.1.25
+    image: ollama/ollama:0.1.29
     ports:
       - 11434:11434
     volumes:
@@ -13,5 +15,15 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-volumes:
-  ollama:
+  litellm:
+    container_name: litellm
+    image: ghcr.io/berriai/litellm:main-v1.33.9
+    ports:
+      - 4000:4000
+    volumes:
+      - ./litellm-config.yaml:/app/config.yaml
+    command: "--config /app/config.yaml --num_workers $LITELLM_WORKERS_NUM"
+    environment:
+      - OPENAI_API_KEY=$OPENAI_API_KEY
+    depends_on:
+      - ollama

@@ -1,0 +1,17 @@
+---
+- name: Create /opt/{{ deploy_litellm_project_name }}
+  become: true
+  ansible.builtin.file:
+    path: "/opt/{{ deploy_litellm_project_name }}"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: "0755"
+- name: Copy litellm-config.yaml to project directory
+  become: true
+  ansible.builtin.copy:
+    src: "{{ deploy_litellm_configfile }}"
+    dest: "/opt/{{ deploy_litellm_project_name }}/litellm-config.yaml"
+    owner: deploy
+    group: deploy
+    mode: "0644"

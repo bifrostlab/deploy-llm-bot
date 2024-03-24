@@ -1,0 +1,3 @@
+---
+deploy_litellm_configfile: ../ollama/litellm-config.yaml
+deploy_litellm_project_name: ollama
