@@ -27,3 +27,13 @@ services:
       - OPENAI_API_KEY=$OPENAI_API_KEY
     depends_on:
       - ollama
+  llm-bot:
+    container_name: llm-bot
+    image: ghcr.io/bifrostlab/llm-assistant/llm-assistant:latest
+    environment:
+      - AI_SERVER_URL=http://litellm:4000
+      - DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN
+      - DISCORD_GUILD_ID=$DISCORD_GUILD_ID
+    depends_on:
+      - ollama
+      - litellm
